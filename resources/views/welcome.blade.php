@@ -14,7 +14,7 @@ Main
                 <h1>DrawTime</h1>
                 <p class="lead text-muted"></p>
                 <p>
-                        <a href="/about" class="btn btn-danger my-2">О проекте</a>
+                        <a href="#" class="btn btn-danger my-2">О проекте</a>
                     <a href="#cards" class="btn btn-dark my-2"  id="cards">Старт</a>
                 </p>
             </div>

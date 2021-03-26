@@ -5,9 +5,6 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
     <script type="text/javascript">
 
     </script>
@@ -101,11 +98,12 @@
 
 
 <div id="drawr-container">
-    <canvas class="demo-canvas drawr-test1" id="demo-canvas"></canvas>
+    <canvas class="demo-canvas"></canvas>
+    <input type="file" id="file-picker" style="display:none;">
 </div>
 
 <img src="" id="ref">
-<input type="file" id="file-picker" style="display:none;">
+
 
 <h2 class="text-right timer"> Time:
     <span id="minutes">0</span>
@@ -121,11 +119,9 @@
 
 <div id="quitModal">
     <h2 class="text-center">Вы уверены, что хотете завершить работу?</h2>
-    <button type="button" class="btn btn-success" onclick="save_image();">Да</button>
+    <button type="button" class="btn btn-success" onclick="finish_work()">Да</button>
     <button type="button" class="btn btn-danger" onclick="document.getElementById('quitModal').hidden = true;">Нет</button>
 </div>
-
-<a id="download" download="/files/myImage.jpg" href="" onclick="download_img(this);">Download to myImage.jpg</a>
 
 <script src="welcome.blade.php"></script>
 
@@ -143,7 +139,6 @@
         document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     }
 
-
     var name = "{{ Auth::user()->name }}";
     var a = 0;
     var b = 0;
@@ -151,17 +146,16 @@
     function save_image() {
         var imagedata = $("#drawr-container .demo-canvas").drawr("export","image/jpeg");
         var element = document.createElement('a');
-        element.setAttribute('href', imagedata);
-        element.setAttribute('download', name+".jpg");
+        element.setAttribute('href', imagedata);// 'data:text/plain;charset=utf-8,' + encodeURIComponent("sillytext"));
+        element.setAttribute('download', name+".png");
         element.style.display = 'none';
         document.body.appendChild(element);
         element.click();
         document.body.removeChild(element);
-        document.cookie = "time="+-1+"";
+        delete_cookie("time");
         delete_cookie("img");
         delete_cookie("type");
     }
-
 
     $("#drawr-container .demo-canvas").drawr({
         "enable_tranparency" : false
@@ -175,7 +169,7 @@
         var imagedata = $("#drawr-container .demo-canvas").drawr("export","image/jpeg");
         var element = document.createElement('a');
         element.setAttribute('href', imagedata);// 'data:text/plain;charset=utf-8,' + encodeURIComponent("sillytext"));
-        element.setAttribute('download', name+".jpg");
+        element.setAttribute('download', name+".png");
         element.style.display = 'none';
         document.body.appendChild(element);
         element.click();
@@ -226,6 +220,12 @@
         document.getElementById('quitModal').hidden = false;
     }
 
+    function finish_work() {
+        save_image();
+        $(".demo-canvas").drawr("stop");
+        document.location.replace("http://drawtime/home");
+    }
+
     function timer_func(){
         if (isPause == -1){
             a = seconds % 60;
@@ -255,21 +255,9 @@
                 setTimeout(timer_func, 1000);
             }
         }
-
-        if (seconds<-10){
-            document.location.replace("http://drawtime/home");
-        }
     }
 
     timer_func();
-
-
-
-    download_img = function(el) {
-        var canvas = document.getElementById('demo-canvas');
-        var imageURI = canvas.toDataURL("image/jpg");
-        el.href = imageURI;
-    }
 
 </script>
 

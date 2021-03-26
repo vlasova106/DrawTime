@@ -3,9 +3,9 @@
     <header class="site-header sticky-top py-1">
         <nav class="container d-flex flex-column flex-md-row justify-content-between main-menu">
             <a class="py-2" href="/" aria-label="Product"><h5>DrawTime</h5></a>
-            <a class="py-2 d-none d-md-inline-block" href="/about">About</a>
-            <a class="py-2 d-none d-md-inline-block" href="">News</a>
-            <a class="py-2 d-none d-md-inline-block" href="/home">Account</a>
+            <a class="py-2 d-none d-md-inline-block" href="#">О проекте</a>
+            {{--<a class="py-2 d-none d-md-inline-block" href="">News</a>--}}
+            <a class="py-2 d-none d-md-inline-block" href="/home">Мой Профиль</a>
 
             @guest
 
