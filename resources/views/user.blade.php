@@ -1,7 +1,16 @@
 @extends('layouts.app')
 
 @section('title')
-Мой профиль
+@foreach($images->reverse() as $key => $img)
+@if($key == 0)
+{{ $img->user_name }}
+@if(Auth::user()->name == $img->user_name)
+<script>
+    window.location.href = '/home';
+</script>
+@endif
+@endif
+@endforeach
 @endsection
 
 <div id="show-image">
@@ -13,9 +22,9 @@
         </svg>
     </button>
     <div class="image-info">
-        <p style="display: none;" id="author">Автор: Admin</p>
+        <p style="display:none;">Автор: <a id="author" href=""></a></p>
         <p id="com"></p>
-        <a href="refs/animals/16.jpg" target="_blank" id="ref_href">Референс</a>
+        <a href="drawtime/refs/animals/16.jpg" target="_blank" id="ref_href">Референс</a>
     </div>
 
 </div>
@@ -26,7 +35,6 @@
 
 <div class="account-content">
 
-
     <div class="container info">
         <div class="row  gy-5">
 
@@ -35,20 +43,36 @@
             </div>
 
             <div class="col-9">
-                <p>{{ Auth::user()->name }}</p>
-                
+
+                @foreach($images->reverse() as $key => $img)
+                @if($key == 0)
+                <p>{{ $img->user_name }}</p>
+                @endif
+                @endforeach
+
                 <div class="d-flex justify-content-start f-info">
                     <p>Подписчики: 79</p>
                     <p>Подписки: 14</p>
                 </div>
 
+                <form method="POST" enctype="multipart/form-data" action="{{url('make_follow')}}">
+                    @csrf
+                    @foreach($images->reverse() as $key => $img)
+                    @if($key == 0)
+                    <input type="hidden" name="user" value="{{ $img->user_id }}">
+                    @endif
+                    @endforeach
+                    <input type="hidden" name="follower" value="{{ Auth::user()->id }}">
+
+                    <button type="submit" class="btn btn-dark follow-but">Подписаться</button>
+                </form>
             </div>
 
         </div>
     </div>
 
-
     <hr>
+
     <div class="container new-images">
         <div class="row">
 
@@ -62,17 +86,15 @@
             </div>
             @empty
             <div class="col-12">
-                <h3 class="text-center">Вы пока что не опубликовали ни одной работы. </h3>
+                <h3 class="text-center">Этот пользователь пока что не опубликовал ни одной работы. </h3>
             </div>
-            <div class="col-12"><a href="/start_editor">
-                    <p class="text-center">Выбрать тему для первой иллюстрации.</p>
-                </a></div>
             @endforelse
 
 
         </div>
 
     </div>
+
 
     <script>
         var img_id, src, user_name, comment, ref_id;
@@ -90,22 +112,18 @@
             document.getElementById('img').style.backgroundImage = src;
             document.getElementById("author").innerHTML = "Автор: " + user_name;
             document.getElementById("com").innerHTML = comment;
-            document.getElementById("ref_href").href = "refs/animals/" + ref_id + ".jpg";
+            document.getElementById("ref_href").href = "http://drawtime/refs/animals/" + ref_id + ".jpg";
+
 
             document.getElementById("fade").style.display = "block";
-
-            $('body').addClass('preventscroll');
         }
 
         function hide() {
             document.getElementById('show-image').hidden = true;
 
             document.getElementById("fade").style.display = "none";
-
-            $('body').removeClass('preventscroll');
         }
     </script>
 
 </div>
-
 @endsection

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class References extends Migration
+class CreateFollowTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class References extends Migration
      */
     public function up()
     {
-        Schema::create('references', function (Blueprint $table) {
+        Schema::create('follow', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->String('src');
-            $table->String('type');
+            $table->string('follower');
+            $table->string('user');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class References extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('references');
+        Schema::dropIfExists('follow');
     }
 }

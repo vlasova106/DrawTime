@@ -4,7 +4,6 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
     <script type="text/javascript">
 
     </script>
@@ -83,6 +82,23 @@
             background-color: rgba(0, 0, 0, 0.7);
         }
 
+        #image-post-form {
+            position: absolute;
+            top: 18vw;
+            right: 30vw;
+            height: auto;
+            padding: 15px 0;
+            width: 40vw;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        #image-post-form textarea {
+            resize: vertical;
+            max-height: 10vw;
+            width: 25vw;
+            margin: auto;
+        }
+
     </style>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.6.95/css/materialdesignicons.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
@@ -95,15 +111,12 @@
 
 <body>
 
-
-
 <div id="drawr-container">
-    <canvas class="demo-canvas"></canvas>
+    <canvas class="demo-canvas" id="canvas"></canvas>
     <input type="file" id="file-picker" style="display:none;">
 </div>
 
 <img src="" id="ref">
-
 
 <h2 class="text-right timer"> Time:
     <span id="minutes">0</span>
@@ -123,39 +136,69 @@
     <button type="button" class="btn btn-danger" onclick="document.getElementById('quitModal').hidden = true;">Нет</button>
 </div>
 
-<script src="welcome.blade.php"></script>
+
+<div id="image-post-form">
+    <form method="POST" enctype="multipart/form-data" action="{{url('post_image')}}" id="form" class="text-center">
+        @csrf
+        <input type="text" name="image" id="my_hidden">
+        <input type="text" name="ref_id" id="ref_id">
+        <input type="text" name="user_id" id="user_id">
+        <input type="text" name="user_name" id="user_name">
+        <div class="form-group">
+            <label for="comment" style="color: #FFF !important;">Ваш комментарий к иллюстрации</label><br>
+            <textarea class="form-control is-invalid" id="comment" name="comment" placeholder="Комментарий" required> </textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Опубликовать ✓</button>
+        <a href="/home" class="btn btn-danger my-2">Выйти ×</a>
+    </form>
+</div>
 
 <script type="text/javascript">
+
     var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)time\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     var img_num = document.cookie.replace(/(?:(?:^|.*;\s*)img\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     var type = document.cookie.replace(/(?:(?:^|.*;\s*)type\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     var seconds = cookieValue*60;
 
     var ref=document.getElementById("ref");
-    var img_src = "refs/"+type+"/"+img_num*-1+".jpg";
+    var img_src = "refs/"+type+"/"+img_num+".jpg";
     ref.src=img_src;
-
-    function delete_cookie(name) {
-        document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-    }
 
     var name = "{{ Auth::user()->name }}";
     var a = 0;
     var b = 0;
 
+    function delete_cookie(name) {
+        document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
+
     function save_image() {
+        if(img_num==""){
+            document.location.replace("http://drawtime/");
+        }else {
+
         var imagedata = $("#drawr-container .demo-canvas").drawr("export","image/jpeg");
+
         var element = document.createElement('a');
-        element.setAttribute('href', imagedata);// 'data:text/plain;charset=utf-8,' + encodeURIComponent("sillytext"));
+        element.setAttribute('href', imagedata);
         element.setAttribute('download', name+".png");
         element.style.display = 'none';
         document.body.appendChild(element);
         element.click();
         document.body.removeChild(element);
+
+        document.getElementById('my_hidden').value = document.getElementById('canvas').toDataURL('image/png');
+        document.getElementById('ref_id').value = ""+img_num;
+        document.getElementById('user_name').value = name;
+        document.getElementById('user_id').value = "{{ Auth::user()->id }}";
+
         delete_cookie("time");
         delete_cookie("img");
         delete_cookie("type");
+
+        }
     }
+
 
     $("#drawr-container .demo-canvas").drawr({
         "enable_tranparency" : false
@@ -221,9 +264,9 @@
     }
 
     function finish_work() {
-        save_image();
-        $(".demo-canvas").drawr("stop");
-        document.location.replace("http://drawtime/home");
+        seconds=-10;
+        document.getElementById('quitModal').hidden = true;
+        document.getElementById('image-post-form').hidden = false;
     }
 
     function timer_func(){
@@ -258,6 +301,13 @@
     }
 
     timer_func();
+
+    document.getElementById('my_hidden').hidden = true;
+    document.getElementById('user_id').hidden = true;
+    document.getElementById('ref_id').hidden = true;
+    document.getElementById('user_name').hidden = true;
+    document.getElementById('image-post-form').hidden = true;
+
 
 </script>
 

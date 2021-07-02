@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-Main
+Главная
 @endsection
 
 @section('content')
@@ -14,8 +14,8 @@ Main
                 <h1>DrawTime</h1>
                 <p class="lead text-muted"></p>
                 <p>
-                        <a href="#" class="btn btn-danger my-2">О проекте</a>
-                    <a href="#cards" class="btn btn-dark my-2"  id="cards">Старт</a>
+                    <a href="#about" class="btn btn-danger my-2">О проекте</a>
+                    <a href="#cards" class="btn btn-dark my-2">Старт</a>
                 </p>
             </div>
         </div>
@@ -23,35 +23,35 @@ Main
 
 
 <div class="container-fluid main-cards">
-    <div class="container ">
+    <div class="container">
 
-        <h3 class="text-center">Выберите тему</h3>
+        <h1 class="text-center" id="cards">Выберите тему</h1>
 
         <div class="row">
-            <div class="col">
-                <div class="card" style="width: 18rem;">
+            <div class="col-4">
+                <div class="card" style="width: 20rem;">
                     <div class="card-body" style="text-align: center">
-                        <h5 class="card-title fw-bold">Портрет</h5>
+                        <h5 class="card-title fw-bold" >Портрет</h5>
                         <img src="img/woman.jpg" class="card-img-top">
                         <a href="/editor" class="btn btn-dark disabled">Go!</a>
                     </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="card" style="width: 18rem;">
+            <div class="col-4">
+                <div class="card" style="width: 20rem;">
                     <div class="card-body" style="text-align: center">
                         <h5 class="card-title fw-bold">Анималистика</h5>
                         <img src="img/tiger.jpg" class="card-img-top">
-                        <a href="" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#animModal"  id="cards">Go!</a>
+                        <a href="" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#animModal">Go!</a>
                     </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="card" style="width: 18rem;">
+            <div class="col-4">
+                <div class="card" style="width: 20rem;">
                     <div class="card-body fw-bold" style="text-align: center">
                         <h5 class="card-title">Пейзаж</h5>
                         <img src="img/landscape.jpg" class="card-img-top">
-                        <a href="/editor" class="btn btn-dark disabled">Go!</a>
+                        <a href="/editor" class="btn btn-dark disabled" >Go!</a>
                     </div>
                 </div>
             </div>
@@ -60,23 +60,15 @@ Main
 </div>
 
 
-    {{--<hr>--}}
+    <div class="container-fluid project-info"  id="about">
+        <h1 class="text-center">О проекте</h1>
+        <p style="text-align: justify;">Значимость этих проблем настолько очевидна, что новая модель организационной деятельности играет важную роль в формировании позиций, занимаемых участниками в отношении поставленных задач. С другой стороны дальнейшее развитие различных форм деятельности влечет за собой процесс внедрения и модернизации дальнейших направлений развития. Идейные соображения высшего порядка, а также сложившаяся структура организации позволяет выполнять важные задания по разработке. </p>
+        <p style="text-align: justify;">
+            Задача организации, в особенности же дальнейшее развитие различных форм деятельности обеспечивает широкому кругу (специалистов) участие в формировании систем массового участия. Повседневная практика показывает, что сложившаяся структура организации в значительной степени обуславливает создание системы обучения кадров, соответствует насущным потребностям. Равным образом рамки и место обучения кадров способствует подготовки и реализации модели развития. С другой стороны новая модель организационной деятельности представляет собой интересный эксперимент проверки системы обучения кадров, соответствует насущным потребностям.</p>
+        <p style="text-align: justify;">
+            Задача организации, в особенности же дальнейшее развитие различных форм деятельности обеспечивает широкому кругу (специалистов) участие в формировании систем массового участия. Повседневная практика показывает, что сложившаяся структура организации в значительной степени обуславливает создание системы обучения кадров, соответствует насущным потребностям. Равным образом рамки и место обучения кадров способствует подготовки и реализации модели развития. С другой стороны новая модель организационной деятельности представляет собой интересный эксперимент проверки системы обучения кадров, соответствует насущным потребностям.</p>
+    </div>
 
-    {{--<div class="container best-of-week">--}}
-        {{--<h3 class="text-center">Лучшее за неделю</h3>--}}
-
-        {{--<div class="row">--}}
-            {{--<div class="col-4">--}}
-                {{--<div class="user-img"></div>--}}
-            {{--</div>--}}
-            {{--<div class="col-4">--}}
-                {{--<div class="user-img"></div>--}}
-            {{--</div>--}}
-            {{--<div class="col-4">--}}
-                {{--<div class="user-img"></div>--}}
-            {{--</div>--}}
-        {{--</div>--}}
-    {{--</div>--}}
 
     <!-- Модальное окно -->
     <div class="modal fade" id="animModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -104,7 +96,7 @@ Main
     <script>
 
         function start_editor(time_limit, type) {
-            var num = Math.floor(Math.random() * (1 - 48)) + 1;
+            var num = (Math.floor(Math.random() * (1 - 46)) + 1)*(-1);
             document.cookie = "time="+time_limit+"";
             document.cookie = "img="+num+"";
             document.cookie = "type="+type+"";

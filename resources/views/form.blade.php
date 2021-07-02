@@ -11,11 +11,11 @@
         {{--{{ $item->name }}--}}
     {{--@endforeach--}}
 
-    {{--<form action="{{url('about/test/store')}}" method="POST">--}}
-        {{--@csrf--}}
-        {{--Picture: <input type="file" name="picture">--}}
-        {{--<input type="submit">--}}
-    {{--</form>--}}
+    <form action="{{url('about/test/store')}}" method="POST">
+        @csrf
+        Picture: <input type="file" name="picture">
+        <input type="submit">
+    </form>
 
     <div class="container ref-form">
 
